@@ -17,4 +17,9 @@ SECTIONS
         *(COMMON)
         __bss_end = .;
     }
+
+    /* Stack grows down from here */
+    . = ALIGN(16);
+    . += 0x10000;          /* 64 KB */
+    __stack_top = .;
 }

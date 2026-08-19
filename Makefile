@@ -1,4 +1,4 @@
-CROSS = mipsel-linux-gnu-gcc
+CROSS = mipsel-linux-gnu-
 CC = $(CROSS)gcc
 LD = $(CROSS)ld
 OBJCOPY = $(CROSS)objcopy

@@ -3,7 +3,7 @@
 void main(void)
 {
     uart_init();
-    uart_puts("MIPS EFI firmware: hello\n");
+    uart_puts("MIPS EFI firmware: early env OK\n");
     while (1)
         ;
 }
