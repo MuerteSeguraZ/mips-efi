@@ -7,14 +7,17 @@ void main(void)
     uart_puts("MIPS EFI firmware: early env OK\n");
 
     efi_init();
-    uart_puts("EFI System Table init\n");
+    uart_puts("EFI System Table + ConOut ready\n");
 
-    uart_puts("Triggering exception...\n");
-    
-    /* Let's have fun. Trigger an exception by storing to address 0 (kuseg, no TLB entry) */
-    *(volatile unsigned int *)0 = 0xdeadbeef;
+    static CHAR16 msg[] = {
+        'H','e','l','l','o',' ','f','r','o','m',' ',
+        'E','F','I',' ','C','o','n','O','u','t','!',
+        '\r','\n', 0
+    };
 
-    uart_puts("This line should never appear\n");
+    EFI_SYSTEM_TABLE *st = efi_get_system_table();
+    st->ConOut->OutputString(st->ConOut, msg);
+
     while (1)
         ;
 }

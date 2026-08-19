@@ -32,6 +32,7 @@ struct _EFI_BOOT_SERVICES;
 
 typedef struct _EFI_SYSTEM_TABLE   EFI_SYSTEM_TABLE;
 typedef struct _EFI_BOOT_SERVICES  EFI_BOOT_SERVICES;
+typedef struct _EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL;
 
 struct _EFI_SYSTEM_TABLE {
     UINT64 Signature;          /* "IBI SYST" */
@@ -44,7 +45,7 @@ struct _EFI_SYSTEM_TABLE {
     EFI_HANDLE ConsoleInHandle;
     VOID *ConIn;
     EFI_HANDLE ConsoleOutHandle;
-    VOID *ConOut;
+    EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *ConOut;
     EFI_HANDLE StandardErrorHandle;
     VOID *StdErr;
     VOID *RuntimeServices;
@@ -69,8 +70,33 @@ struct _EFI_BOOT_SERVICES {
     /* rest left NULL for now */
 };
 
+typedef EFI_STATUS (*EFI_TEXT_STRING)(
+    EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
+    CHAR16 *String
+);
+
+typedef EFI_STATUS (*EFI_TEXT_RESET)(
+    EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
+    BOOLEAN ExtendedVerification
+);
+
+struct _EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL {
+    EFI_TEXT_RESET Reset;
+    EFI_TEXT_STRING OutputString;
+    /* We leave the rest NULL for now */
+    VOID *TestString;
+    VOID *QueryMode;
+    VOID *SetMode;
+    VOID *SetAttribute;
+    VOID *ClearScreen;
+    VOID *SetCursorPosition;
+    VOID *EnableCursor;
+    VOID *Mode;
+};
+
 /* Public interface */
 void efi_init(void);
+void efi_console_init(EFI_SYSTEM_TABLE *st);
 EFI_SYSTEM_TABLE *efi_get_system_table(void);
 
 #endif /* EFI_H */

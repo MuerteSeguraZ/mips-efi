@@ -37,6 +37,8 @@ void efi_init(void)
 
     gST.NumberOfTableEntries = 0;
     gST.ConfigurationTable = NULL;
+
+    efi_console_init(&gST);
 }
 
 EFI_SYSTEM_TABLE *efi_get_system_table(void)
