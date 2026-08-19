@@ -6,7 +6,7 @@ OBJCOPY = $(CROSS)objcopy
 CFLAGS = -ffreestanding -fno-builtin -fno-pic -mno-abicalls -mno-shared -G0 -Wall -O2 -msoft-float
 LDFLAGS = -T link.ld -nostdlib
 
-OBJS = start.o main.o uart.o
+OBJS = start.o main.o uart.o except.o
 
 all: firmware.bin
 

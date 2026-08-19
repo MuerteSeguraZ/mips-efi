@@ -2,6 +2,17 @@ ENTRY(_start)
 
 SECTIONS
 {
+    . = 0x80000000;
+
+    .text.tlb : {
+        *(.text.tlb)
+    }
+
+    . = 0x80000180;
+    .text.general : {
+        *(.text.general)
+    }
+
     . = 0x80100000;
 
     .text : {

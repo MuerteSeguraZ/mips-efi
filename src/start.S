@@ -3,17 +3,20 @@
 _start:
     /* Here's what we'll setup (CP0 Status):
      * - Set CU0 so we can access CP0,
-     * - Leave BEV=1 for now (we still use boot vectors),
-     * - Clear EXL/ERL/IE,
+     * - Clear BEV so we can use the normal vectors at 0x80000xxx
+     * - Clear EXL/ERL/IE/KSU,
      * - Nothing more, for now.
      */
-     mfc0 $t0, $12        /* Status */
-     li $t1, 0x10000000   /* CU0 */
-     or $t0, $t0, $t1
-     li $t1, ~0x1f        /* clear IE, EXL, ERL, KSU */
-     and $t0, $t0, $t1
-     mtc0 $t0, $12
-     ehb                  /* hazard barrier (yes, this is safe on 24Kf) */
+    mfc0 $t0, $12        /* Status */
+    li $t1, 0x10000000   /* CU0 */
+    or $t0, $t0, $t1
+    li $t1, 0x00400000   /* BEV bit */
+    not $t1, $t1
+    and $t0, $t0, $t1    /* clear BEV */
+    li $t1, ~0x1f        /* clear IE, EXL, ERL, KSU */
+    and $t0, $t0, $t1
+    mtc0 $t0, $12
+    ehb                  /* hazard barrier (yes, this is safe on 24Kf) */
 
      /* Now, let's clear the BSS. */
      la $t0, __bss_start
