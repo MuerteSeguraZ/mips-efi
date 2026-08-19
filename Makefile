@@ -8,7 +8,7 @@ CFLAGS  = -ffreestanding -fno-builtin -fno-pic -mno-abicalls -mno-shared \
 LDFLAGS = -T link.ld -nostdlib
 
 SRCS_S  = src/start.S src/except.S
-SRCS_C  = src/main.c src/uart.c
+SRCS_C  = src/main.c src/uart.c src/efi/system_table.c
 OBJS    = $(SRCS_S:.S=.o) $(SRCS_C:.c=.o)
 
 all: firmware.elf
